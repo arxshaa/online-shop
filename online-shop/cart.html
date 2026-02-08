@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keranjang Belanja - MyShop</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+    
+    <!-- CUSTOM ALERT -->
+    <div id="customAlert" class="custom-alert">
+        <div class="alert-content">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #3B82F6;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <span></span>
+        </div>
+        <button class="close-alert-btn" onclick="closeAlert()">&times;</button>
+    </div>
+
+    <!-- Delete Confirmation Alert -->
+    <div id="deleteAlert" class="custom-alert">
+        <div class="alert-content">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #EF4444;"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+            <span>Apakah Anda yakin ingin menghapus item ini?</span>
+        </div>
+        <div class="alert-actions">
+            <button class="btn-primary btn-red" onclick="closeDeleteAlert()">Batal</button>
+            <button class="btn-primary btn-red" onclick="confirmDelete()">Hapus</button>
+        </div>
+    </div>
+
+    <!-- HEADER & NAVIGASI (Sama seperti index.html) -->
+    <header>
+        <div class="container">
+            <div class="hamburger-menu" onclick="toggleSidebar()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="logo">
+                <h1>MyShop</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="index.html" title="Home">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" title="Katalog">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="cart.html" style="color: #2563eb;" title="Keranjang">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                            <span class="cart-badge">0</span>
+                        </a>
+                    </li>
+                    <li><a href="login.html" class="btn-login">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- KONTEN KERANJANG -->
+    <main class="cart-page">
+        <div class="container">
+            <h2>Keranjang Belanja Anda</h2>
+            
+            <div class="cart-layout">
+                
+                <!-- Bagian Kiri: Tabel Item -->
+                <div class="cart-items">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Produk</th>
+                                <th>Harga</th>
+                                <th>Jumlah</th>
+                                <th>Subtotal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cartTableBody">
+                            <!-- Data akan dimuat lewat JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bagian Kanan: Ringkasan -->
+                <div class="cart-summary">
+                    <h3>Ringkasan Belanja</h3>
+                    <div class="summary-row">
+                        <span>Total Item</span>
+                        <span id="summaryTotalItems">0 Barang</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Total Harga</span>
+                        <span id="summaryTotalPrice">Rp 0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Diskon</span>
+                        <span style="color: #10b981;">- Rp 0</span>
+                    </div>
+                    
+                    <div class="summary-row total">
+                        <span>Total Bayar</span>
+                        <span id="summaryTotalPay">Rp 0</span>
+                    </div>
+
+                    <button class="btn-primary btn-checkout" onclick="processCheckout()">Lanjut ke Pembayaran</button>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 MyShop. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- SIDEBAR (Untuk Mobile) -->
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+    <aside class="mobile-sidebar" id="mobileSidebar">
+        <div class="sidebar-header">
+            <h3>Menu</h3>
+            <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+        </div>
+        <div class="sidebar-search">
+            <input type="text" placeholder="Cari produk...">
+            <button>Cari</button>
+        </div>
+        <ul class="sidebar-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#">Katalog</a></li>
+            <li><a href="#">Keranjang (2)</a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+    </aside>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mobileSidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            // Toggle class 'active' untuk memicu animasi CSS
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        function showCustomAlert(message) {
+            const alertBox = document.getElementById('customAlert');
+            const alertText = alertBox.querySelector('.alert-content span');
+            alertText.textContent = message;
+            alertBox.classList.add('show');
+            setTimeout(() => { alertBox.classList.remove('show'); }, 3000);
+        }
+
+        function closeAlert() {
+            document.getElementById('customAlert').classList.remove('show');
+        }
+        
+        let itemToDeleteId = null;
+        const deleteAlert = document.getElementById('deleteAlert');
+
+        // --- LOGIKA HALAMAN KERANJANG ---
+        function loadCart() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const tbody = document.getElementById('cartTableBody');
+            const summaryItems = document.getElementById('summaryTotalItems');
+            const summaryPrice = document.getElementById('summaryTotalPrice');
+            const summaryPay = document.getElementById('summaryTotalPay');
+            const badge = document.querySelector('.cart-badge');
+
+            tbody.innerHTML = '';
+            
+            let totalItems = 0;
+            let totalPrice = 0;
+
+            if (cart.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">Keranjang belanja Anda kosong.</td></tr>';
+            } else {
+                cart.forEach(item => {
+                    totalItems += item.quantity;
+                    totalPrice += item.price * item.quantity;
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <div class="cart-product-info">
+                                <img src="${item.image}" alt="${item.name}">
+                                <div>
+                                    <p class="product-name">${item.name}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Rp ${item.price.toLocaleString('id-ID')}</td>
+                        <td><input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${item.id}, this.value)"></td>
+                        <td>Rp ${(item.price * item.quantity).toLocaleString('id-ID')}</td>
+                        <td><button class="btn-remove" onclick="removeFromCart(${item.id})" title="Hapus">&times;</button></td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+
+            // Update Ringkasan
+            summaryItems.textContent = `${totalItems} Barang`;
+            summaryPrice.textContent = `Rp ${totalPrice.toLocaleString('id-ID')}`;
+            summaryPay.textContent = `Rp ${totalPrice.toLocaleString('id-ID')}`;
+            if(badge) badge.textContent = totalItems;
+        }
+
+        function updateQuantity(id, newQuantity) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let item = cart.find(i => i.id === id);
+            if (item) {
+                item.quantity = parseInt(newQuantity);
+                if (item.quantity < 1) item.quantity = 1;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCart(); // Reload tampilan
+            }
+        }
+
+        function removeFromCart(id) {
+            itemToDeleteId = id;
+            deleteAlert.classList.add('show');
+        }
+
+        function closeDeleteAlert() {
+            deleteAlert.classList.remove('show');
+            itemToDeleteId = null;
+        }
+
+        function confirmDelete() {
+            if (itemToDeleteId) {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cart = cart.filter(item => item.id !== itemToDeleteId);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCart(); // Reload tampilan
+                showCustomAlert('Item berhasil dihapus');
+                closeDeleteAlert();
+            }
+        }
+
+        function processCheckout() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (cart.length === 0) {
+                showCustomAlert("Keranjang belanja kosong!");
+                return;
+            }
+
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+            // Validasi Stok
+            for (let item of cart) {
+                let product = products.find(p => p.id === item.id);
+                if (!product) {
+                     showCustomAlert(`Produk ${item.name} tidak ditemukan!`);
+                     return;
+                }
+                if (product.stock < item.quantity) {
+                    showCustomAlert(`Stok ${item.name} tidak mencukupi! Sisa: ${product.stock}`);
+                    return;
+                }
+            }
+
+            // Kurangi Stok & Update Terjual
+            for (let item of cart) {
+                let product = products.find(p => p.id === item.id);
+                product.stock -= item.quantity;
+                product.sold = (product.sold || 0) + item.quantity;
+                
+                if (product.stock === 0) {
+                    product.status = 'out_of_stock';
+                }
+            }
+
+            // Buat Order Baru
+            let totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            let newOrder = {
+                id: 'ORD-' + Date.now().toString().slice(-6),
+                customer: 'User Guest',
+                amount: totalAmount,
+                status: 'paid',
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                items: cart
+            };
+
+            orders.unshift(newOrder); // Tambah ke awal array
+
+            // Simpan Data
+            localStorage.setItem('products', JSON.stringify(products));
+            localStorage.setItem('orders', JSON.stringify(orders));
+            localStorage.removeItem('cart');
+
+            showCustomAlert("Pembayaran Berhasil!");
+            loadCart();
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        }
+
+        // Load data saat halaman dibuka
+        document.addEventListener('DOMContentLoaded', loadCart);
+    </script>
+</body>
+</html>

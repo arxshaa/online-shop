@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MyShop</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+    <!-- CUSTOM ALERT -->
+    <div id="customAlert" class="custom-alert">
+        <div class="alert-content">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #F59E0B;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            <span>Jangan memasukkan email dan password yang sesungguhnya. Ini hanya demo.</span>
+        </div>
+        <button class="close-alert-btn" onclick="closeAlert()">&times;</button>
+    </div>
+
+    <div class="login-container">
+        <div class="login-wrapper">
+            
+            <!-- TOGGLE SWITCH -->
+            <div class="toggle-container">
+                <span class="toggle-label active" onclick="setLoginMode('user')">User</span>
+                <div class="toggle-switch" onclick="toggleLoginMode()">
+                    <div class="toggle-ball">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+                </div>
+                <span class="toggle-label" onclick="setLoginMode('admin')">Admin</span>
+            </div>
+
+            <!-- SLIDER CONTAINER -->
+            <div class="form-slider" id="formSlider">
+                
+                <!-- SISI KIRI: USER / PELANGGAN -->
+                <div class="login-side user-side">
+                    <h2>User</h2>
+                    <p class="login-desc">Masuk untuk mulai berbelanja</p>
+                    
+                    <form onsubmit="handleUserLogin(event)">
+                        <div class="form-group">
+                            <label for="user-email">Email Address</label>
+                            <input type="email" id="user-email" name="email" placeholder="nama@email.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="user-password">Password</label>
+                            <div class="input-wrapper">
+                                <input type="password" id="user-password" name="password" placeholder="********" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('user-password', this)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary full-width">Login User</button>
+                    </form>
+
+                    <div class="login-footer">
+                        <p>Belum punya akun? <a href="register.html">Daftar disini</a></p>
+                    </div>
+                </div>
+
+                <!-- SISI KANAN: ADMIN / DASHBOARD -->
+                <div class="login-side admin-side">
+                    <h2>Admin</h2>
+                    <p class="login-desc">Restricted access</p>
+
+                    <form onsubmit="handleAdminLogin(event)">
+                        <div class="form-group">
+                            <label for="admin-email">Email Admin</label>
+                            <input type="email" id="admin-email" name="email" placeholder="admin@myshop.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="admin-password">Password</label>
+                            <div class="input-wrapper">
+                                <input type="password" id="admin-password" name="password" placeholder="********" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('admin-password', this)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary full-width btn-admin">Login Admin</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tampilkan Custom Alert saat halaman dimuat
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(() => {
+                document.getElementById('customAlert').classList.add('show');
+            }, 500); // Delay sedikit agar animasi terlihat smooth
+        });
+
+        function closeAlert() {
+            document.getElementById('customAlert').classList.remove('show');
+        }
+
+        let currentMode = 'user';
+
+        function toggleLoginMode() {
+            setLoginMode(currentMode === 'user' ? 'admin' : 'user');
+        }
+
+        function setLoginMode(mode) {
+            currentMode = mode;
+            const slider = document.getElementById('formSlider');
+            const ball = document.querySelector('.toggle-ball');
+            const switchTrack = document.querySelector('.toggle-switch');
+            const labels = document.querySelectorAll('.toggle-label');
+
+            // SVG Icons
+            const userIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`;
+            const adminIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>`;
+
+            if (mode === 'user') {
+                slider.style.transform = 'translateX(0)';
+                ball.style.transform = 'translateX(0)';
+                ball.innerHTML = userIcon;
+                ball.style.color = '#6b7280'; // Warna ikon user (abu-abu)
+                switchTrack.style.backgroundColor = '#e2e8f0';
+                labels[0].classList.add('active');
+                labels[1].classList.remove('active');
+            } else {
+                slider.style.transform = 'translateX(-50%)';
+                ball.style.transform = 'translateX(24px)';
+                ball.innerHTML = adminIcon;
+                ball.style.color = '#3B82F6'; // Warna ikon admin (biru)
+                switchTrack.style.backgroundColor = '#3B82F6';
+                labels[0].classList.remove('active');
+                labels[1].classList.add('active');
+            }
+        }
+
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const isPassword = input.type === 'password';
+            
+            input.type = isPassword ? 'text' : 'password';
+
+            const eyeOpen = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+            const eyeClosed = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+            
+            btn.innerHTML = isPassword ? eyeClosed : eyeOpen;
+        }
+
+        function handleUserLogin(event) {
+            event.preventDefault();
+            // Simulasi login user -> Redirect ke Home
+            window.location.href = 'index.html';
+        }
+
+        function handleAdminLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+
+            if (email === 'admin@arsha.apparel' && password === 'arshaapparel') {
+                localStorage.setItem('adminName', 'Admin Arsha');
+                window.location.href = 'dashboard.html';
+            } else {
+                // Tampilkan error di custom alert
+                const alertBox = document.getElementById('customAlert');
+                const alertText = document.querySelector('.alert-content span');
+                alertText.textContent = "Login Gagal! Email atau Password salah.";
+                alertBox.classList.add('show');
+                
+                // Sembunyikan otomatis setelah 3 detik
+                setTimeout(() => {
+                    alertBox.classList.remove('show');
+                }, 3000);
+            }
+        }
+    </script>
+
+</body>
+</html>

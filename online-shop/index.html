@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <!-- Kita akan hubungkan CSS nanti -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <!-- HEADER & NAVIGASI -->
+    <header>
+        <div class="container">
+            <!-- Tombol Hamburger (Muncul di Mobile) -->
+            <div class="hamburger-menu" onclick="toggleSidebar()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="logo">
+                <h1>ArshaApparel</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="index.html" title="Home">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" title="Katalog">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="cart.html" title="Keranjang">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                            <span class="cart-badge">0</span>
+                        </a>
+                    </li>
+                    <li><a href="login.html" class="btn-login">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO SECTION (Banner Promosi) -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Get Your Stuff Here!</h2>
+            <p>The Products Are High Quality and Affordable!</p>
+            <a href="#products" class="btn-primary">Shop Now</a>
+        </div>
+    </section>
+
+    <!-- DAFTAR PRODUK -->
+    <main id="products">
+        <div class="container">
+            <h2>Produk Terlaris</h2>
+            
+            <!-- Grid Container untuk Produk -->
+            <div class="product-grid" id="productGrid">
+                <!-- Produk akan dimuat lewat JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 MyShop. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- SIDEBAR MENU (Slide dari Kiri) -->
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+    <aside class="mobile-sidebar" id="mobileSidebar">
+        <div class="sidebar-header">
+            <h3>Menu</h3>
+            <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+        </div>
+        <div class="sidebar-search">
+            <input type="text" placeholder="Cari produk...">
+            <button>Cari</button>
+        </div>
+        <ul class="sidebar-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#">Katalog</a></li>
+            <li><a href="#">Keranjang (0)</a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+    </aside>
+
+    <!-- JAVASCRIPT SEDERHANA -->
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mobileSidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            // Toggle class 'active' untuk memicu animasi CSS
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // --- DATA PRODUK (Simulasi Database) ---
+        let products = [];
+
+        function loadProducts() {
+            const storedProducts = localStorage.getItem('products');
+            if (storedProducts) {
+                products = JSON.parse(storedProducts);
+            } else {
+                // Default data jika LocalStorage kosong (sama dengan products.html)
+                products = [
+                    { id: 1, name: 'Sepatu Sneaker Keren', category: 'shoes', price: 350000, stock: 50, status: 'active', image: 'sepatu.jpg', sold: 0, created_at: new Date().toISOString(), deleted_at: null },
+                    { id: 2, name: 'Jaket Hoodie Polos', category: 'clothing', price: 150000, stock: 100, status: 'active', image: 'jaket.jpg', sold: 0, created_at: new Date().toISOString(), deleted_at: null },
+                    { id: 3, name: 'Jam Tangan Analog', category: 'accessories', price: 500000, stock: 30, status: 'active', image: 'jam.jpg', sold: 0, created_at: new Date().toISOString(), deleted_at: null },
+                    { id: 4, name: 'Sepatu Lari Ringan', category: 'shoes', price: 450000, stock: 25, status: 'active', image: 'sepatu.jpg', sold: 0, created_at: new Date().toISOString(), deleted_at: null },
+                    { id: 5, name: 'Kemeja Flannel Kotak', category: 'clothing', price: 200000, stock: 60, status: 'active', image: 'jaket.jpg', sold: 0, created_at: new Date().toISOString(), deleted_at: null },
+                    { id: 6, name: 'Smartwatch Sport', category: 'accessories', price: 850000, stock: 15, status: 'active', image: 'jam.jpg', sold: 0, created_at: new Date().toISOString(), deleted_at: null },
+                    { id: 7, name: 'Tas Ransel Canvas', category: 'accessories', price: 300000, stock: 40, status: 'active', image: 'sepatu.jpg', sold: 0, created_at: new Date().toISOString(), deleted_at: null },
+                    { id: 8, name: 'Topi Baseball Polos', category: 'clothing', price: 75000, stock: 200, status: 'active', image: 'jaket.jpg', sold: 0, created_at: new Date().toISOString(), deleted_at: null },
+                    { id: 9, name: 'Kacamata Hitam Retro', category: 'accessories', price: 120000, stock: 50, status: 'active', image: 'jam.jpg', sold: 0, created_at: new Date().toISOString(), deleted_at: null },
+                    { id: 10, name: 'Dompet Kulit Pria', category: 'accessories', price: 250000, stock: 80, status: 'active', image: 'sepatu.jpg', sold: 0, created_at: new Date().toISOString(), deleted_at: null }
+                ];
+                localStorage.setItem('products', JSON.stringify(products));
+            }
+        }
+
+        function renderBestSellingProducts() {
+            const productGrid = document.getElementById('productGrid');
+            
+            // Filter: Hanya tampilkan produk ACTIVE dan TIDAK DIHAPUS
+            const activeProducts = products.filter(p => p.status === 'active' && !p.deleted_at);
+
+            // Urutkan berdasarkan penjualan tertinggi (descending)
+            const sortedProducts = activeProducts.sort((a, b) => (b.sold || 0) - (a.sold || 0));
+
+            productGrid.innerHTML = '';
+
+            sortedProducts.forEach(product => {
+                const formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(product.price);
+                
+                const productCard = `
+                    <article class="product-card">
+                        <div style="position: relative;">
+                            <img src="${product.image}" alt="${product.name}">
+                            <span style="position: absolute; top: 10px; right: 10px; background: #EF4444; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Terjual ${product.sold}</span>
+                        </div>
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p class="price">${formattedPrice}</p>
+                            <button class="btn-add-cart" onclick="addToCart(${product.id})">Tambah ke Keranjang</button>
+                        </div>
+                    </article>
+                `;
+                productGrid.innerHTML += productCard;
+            });
+        }
+
+        // --- LOGIKA KERANJANG BELANJA ---
+        function addToCart(id) {
+            // Cek Stok Real-time
+            const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
+            const product = storedProducts.find(p => p.id === id);
+            
+            if (product && product.stock <= 0) {
+                alert("Maaf, stok produk ini habis!");
+                return;
+            }
+
+            // Ambil data keranjang yang sudah ada atau buat array baru
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Cek apakah produk sudah ada di keranjang
+            let existingItem = cart.find(item => item.id === id);
+            
+            if (existingItem) {
+                // Cek stok lagi jika menambah jumlah
+                if (product && existingItem.quantity >= product.stock) {
+                    alert("Maaf, stok tidak mencukupi untuk menambah jumlah!");
+                    return;
+                }
+                existingItem.quantity += 1; // Jika ada, tambah jumlahnya
+            } else {
+                // Ambil data detail dari produk yang ditemukan di database
+                cart.push({ 
+                    id: product.id, 
+                    name: product.name, 
+                    price: product.price, 
+                    image: product.image, 
+                    quantity: 1 
+                });
+            }
+            
+            // Simpan kembali ke LocalStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Update badge keranjang
+            updateCartBadge();
+            
+            // Tampilkan notifikasi sederhana
+            alert(product.name + " berhasil ditambahkan ke keranjang!");
+        }
+
+        function updateCartBadge() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const badge = document.querySelector('.cart-badge');
+            if (badge) badge.textContent = totalItems;
+        }
+
+        // Jalankan saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+            updateCartBadge();
+            renderBestSellingProducts();
+        });
+    </script>
+
+</body>
+</html>
